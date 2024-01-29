@@ -3,29 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA Player Stats</title>
+    <title>NBA Stats Predictor</title>
 </head>
 <body>
-    <h1>NBA Player Stats</h1>
-    <label for="playerName">Enter Player Name:</label>
-    <input type="text" id="playerName" placeholder="LeBron James">
-    <br>
-    <label for="statType">Choose Stat Type:</label>
-    <select id="statType">
-        <option value="PTS">Points (PTS)</option>
-        <!-- Add more stat options as needed -->
-    </select>
-    <br>
-    <label for="comparison">Choose Comparison:</label>
-    <select id="comparison">
-        <option value="higher">Higher Than</option>
-        <option value="lower">Lower Than</option>
-    </select>
-    <br>
-    <button onclick="getStats()">Get Player Stats</button>
-    <br>
-    <h2>Player Stats:</h2>
-    <div id="playerStats"></div>
-    <script src="main.js"></script>
+    <h1>NBA Stats Predictor</h1>
+    <form id="predictionForm">
+        <label for="2P">2P:</label>
+        <input type="text" id="2P" name="2P" placeholder="Enter 2P">
+        <br>
+        <!-- Add other input fields for your features -->
+        <br>
+        <button type="button" onclick="predictStats()">Predict</button>
+    </form>
+    <p id="predictionResult"></p>
+
+    <!-- Include the JavaScript code here -->
+    <script>
+        function predictStats() {
+            var formData = new FormData(document.getElementById('predictionForm'));
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update the HTML page with the prediction result
+                document.getElementById('predictionResult').innerText = 'Predicted Value: ' + data[0].Predicted_PTS;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </body>
 </html>

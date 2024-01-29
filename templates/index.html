@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Stats Predictor</title>
+</head>
+<body>
+    <h1>NBA Stats Predictor</h1>
+    <label for="playerName">Player Name:</label>
+    <input type="text" id="playerName" placeholder="Enter player name">
+    <br>
+    <label for="stat">Stat:</label>
+    <select id="stat">
+        <option value="PTS">Points</option>
+        <option value="AST">Assists</option>
+        <option value="TRB">Rebounds</option>
+        <!-- Add more options for other stats -->
+    </select>
+    <br>
+    <label for="expectedValue">Expected Value:</label>
+    <input type="number" id="expectedValue" placeholder="Enter expected value">
+    <br>
+    <label for="comparison">Comparison:</label>
+    <select id="comparison">
+        <option value="higher">Higher Than</option>
+        <option value="lower">Lower Than</option>
+    </select>
+    <br>
+    <button onclick="predictStats()">Predict</button>
+    <p id="predictionResult"></p>
+
+    <!-- Include the JavaScript code here -->
+    <script>
+        function predictStats() {
+            // Your JavaScript code for predicting stats goes here
+            // You can use AJAX or fetch to send a request to your Flask server
+            // and handle the response to update the HTML page
+            // Example:
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    playerName: document.getElementById('playerName').value,
+                    stat: document.getElementById('stat').value,
+                    expectedValue: document.getElementById('expectedValue').value,
+                    comparison: document.getElementById('comparison').value,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the HTML page with the prediction result
+                document.getElementById('predictionResult').innerText = 'Predicted Value: ' + data.predictedValue;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
